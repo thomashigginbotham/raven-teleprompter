@@ -1,4 +1,10 @@
-<form [formGroup]="prompterForm" [hidden]="prompterIsActive" novalidate>
+<section *ngIf="!isBrowserSupported" class="browser-warning">
+  <p>Your browser does not support the Web Speech API. Try this page in Chrome.</p>
+</section>
+
+<form *ngIf="isBrowserSupported" [formGroup]="prompterForm"
+      [hidden]="prompterIsActive"
+      novalidate>
   <div class="prompter-input-wrapper">
     <div class="form-field">
       <label for="inputText" class="sr-only">Prompter Text</label>

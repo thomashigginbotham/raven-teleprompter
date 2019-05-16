@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  isBrowserSupported: boolean;
   prompterForm: FormGroup;
   prompterWords: string[];
   prompterIsActive: boolean;
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _changeDetectorRef: ChangeDetectorRef
   ) {
+    this.isBrowserSupported = 'webkitSpeechRecognition' in window;
     this.prompterIsActive = false;
     this._cursorPosition = 0;
     this._lookAheadWordCount = 5;
@@ -40,6 +42,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.isBrowserSupported) {
+      return;
+    }
+
     this.setupRecognition();
     this.buildForm();
     this.loadScript();

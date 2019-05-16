@@ -1,6 +1,18 @@
 // ==-- App Styles --==
 @import '../assets/scss/partials/vars';
 
+// Browser warning
+.browser-warning {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: $spacer-200;
+  height: 100vh;
+  text-align: center;
+  font-size: $font-200;
+}
+
 // Prompter input
 .prompter-input-wrapper {
   display: grid;
