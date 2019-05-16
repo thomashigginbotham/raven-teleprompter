@@ -1,0 +1,70 @@
+// ==-- App Styles --==
+@import '../assets/scss/partials/vars';
+
+// Prompter input
+.prompter-input-wrapper {
+  display: grid;
+  grid-template-rows: auto min-content;
+  grid-gap: $spacer-200;
+  box-sizing: border-box;
+  padding: $spacer-200;
+  height: 100vh;
+  text-align: center;
+}
+
+.prompter-input {
+  box-sizing: border-box;
+  padding: $spacer-100;
+  width: 100%;
+  height: 100%;
+  max-width: 50rem;
+}
+
+// Prompter board
+.prompter-wrapper {
+  display: grid;
+  grid-template-rows: auto min-content;
+  height: 100vh;
+  color: $color-white;
+  background-color: $color-black;
+}
+
+.prompter-board {
+  padding: $spacer-200;
+  overflow-y: scroll;
+  font-size: 10vh;
+  scroll-behavior: smooth;
+
+  @media (orientation: portrait) {
+    font-size: 9vw;
+  }
+}
+
+.word {
+  margin-right: .25em;
+  display: inline-block;
+  opacity: .6;
+  cursor: pointer;
+  transition: .2s transform ease-in-out;
+
+  &.passed {
+    opacity: .3;
+  }
+
+  &.next {
+    color: $color-highlight;
+    opacity: 1;
+  }
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.actions {
+  border-top: 1px solid $color-gray-30;
+  padding: $spacer-200;
+  text-align: center;
+  background-color: $color-gray-20;
+}

@@ -1,0 +1,20 @@
+// ==-- Buttons --==
+
+[type=button] {
+  padding: 0 $spacer-200;
+  height: $spacer-300;
+  border: 0;
+  border-radius: $spacer-300 / 2;
+  font-size: $font-120;
+  font-weight: $font-bold;
+  color: $color-gray-20;
+  background-color: $color-gray-90;
+  transition: .2s transform ease-in-out;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: $color-black;
+    transform: scale(1.1);
+  }
+}

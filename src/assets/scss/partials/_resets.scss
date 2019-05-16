@@ -1,0 +1,12 @@
+// ==-- Resets --==
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font: #{$font-100}/#{$line-height-140} $font-family;
+}
