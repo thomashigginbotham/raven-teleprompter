@@ -11,11 +11,13 @@ export class AppComponent implements OnInit {
   prompterForm: FormGroup;
   prompterWords: string[];
   prompterIsActive: boolean;
+  prompterIsPaused: boolean;
 
   @ViewChild('prompterBoard')
   prompterBoard: ElementRef;
 
   private _recognition: any;
+  private _restartOnEnd: boolean;
   private _cursorPosition: number;
   private _lookAheadWordCount: number;
   private _foundWordCache: string[];
@@ -27,7 +29,10 @@ export class AppComponent implements OnInit {
   ) {
     this.isBrowserSupported = 'webkitSpeechRecognition' in window;
     this.prompterIsActive = false;
+    this.prompterIsPaused = false;
+
     this._cursorPosition = 0;
+    this._restartOnEnd = false;
     this._lookAheadWordCount = 5;
     this._foundWordCache = [];
   }
@@ -66,9 +71,22 @@ export class AppComponent implements OnInit {
    * Event handler for click on prompter words.
    */
   wordClick(e: any, index: number) {
-    this.restartPrompter();
     this.cursorPosition = index;
+    this.restartPrompter();
     this.scrollIntoView(e.target);
+  }
+
+  /**
+   * Event handler for play/pause button click.
+   */
+  togglePlayPauseClick() {
+    this.prompterIsPaused = !this.prompterIsPaused;
+
+    if (this.prompterIsPaused) {
+      this.pausePrompter();
+    } else {
+      this.startPrompter();
+    }
   }
 
   /**
@@ -88,8 +106,12 @@ export class AppComponent implements OnInit {
     this._recognition.continuous = true;
     this._recognition.interimResults = true;
 
-    // Try restarting speech recognition if it stops listening
+    // Attempt to restart speech recognition if it stops by accident
     this._recognition.onend = () => {
+      if (!this._restartOnEnd) {
+        return;
+      }
+
       try {
         this._recognition.start();
       } catch (err) {
@@ -145,6 +167,8 @@ export class AppComponent implements OnInit {
    * Starts prompter and speech recognition.
    */
   startPrompter(): void {
+    this._restartOnEnd = true;
+
     try {
       this._recognition.start();
       this.prompterIsActive = true;
@@ -157,11 +181,24 @@ export class AppComponent implements OnInit {
    * Stops prompter and speech recognition.
    */
   stopPrompter(): void {
-    this._recognition.onend = () => { };
+    this._restartOnEnd = false;
+
+    try {
+      this._recognition.abort();
+      this.prompterIsActive = false;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  /**
+   * Stops prompter and speech recognition while keeping the prompter active.
+   */
+  pausePrompter(): void {
+    this._restartOnEnd = false;
 
     try {
       this._recognition.stop();
-      this.prompterIsActive = false;
     } catch (err) {
       console.log(err);
     }
@@ -171,11 +208,13 @@ export class AppComponent implements OnInit {
    * Stops the prompter, reinitializes, and starts it again.
    */
   restartPrompter(): void {
-    this._recognition.oneend = () => { };
+    this._restartOnEnd = false;
 
     try {
-      this._recognition.stop();
+      this._recognition.abort();
       this._recognition.start();
+
+      this._restartOnEnd = true;
       this.prompterIsActive = true;
     } catch (err) {
       console.log(err);

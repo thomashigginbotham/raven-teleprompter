@@ -75,9 +75,16 @@
   }
 }
 
+// Action bar
 .actions {
-  border-top: 1px solid $color-gray-30;
+  display: flex;
   padding: $spacer-200;
+  border-top: 1px solid $color-gray-30;
   text-align: center;
   background-color: $color-gray-20;
+}
+
+.actions-context,
+.actions-options {
+  flex: 1;
 }
