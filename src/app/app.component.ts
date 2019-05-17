@@ -212,10 +212,14 @@ export class AppComponent implements OnInit {
 
     try {
       this._recognition.abort();
-      this._recognition.start();
 
-      this._restartOnEnd = true;
-      this.prompterIsActive = true;
+      // Wait a little before starting again. Chrome doesn't work otherwise.
+      setTimeout(() => {
+        this._recognition.start();
+
+        this._restartOnEnd = true;
+        this.prompterIsActive = true;
+      }, 250);
     } catch (err) {
       console.log(err);
     }
